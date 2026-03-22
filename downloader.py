@@ -11,8 +11,22 @@ logger = logging.getLogger(__name__)
 
 class Downloader:
     def __init__(self) -> None:
-        # Можно добавить сюда настройки yt_dlp, если нужно
-        pass
+        self.ydl_opts = {
+            # 1. Приоритет форматов: ищем видео до 1080p, которое весит меньше 45МБ.
+            # Если нет — ищем 720p. Если нет — берем любое лучшее.
+            'format': 'bestvideo[height<=1080][filesize<45M]+bestaudio/best[height<=720][filesize<45M]/best',
+
+            'merge_output_format': 'mp4',
+            'noplaylist': True,
+
+            # 2. Пост-процессор: если файл всё равно больше 50МБ,
+            # заставляем ffmpeg принудительно его пережать.
+            'postprocessor_args': [
+                '-fs', '49M',  # Ограничение размера выходного файла (File Size)
+                '-vcodec', 'libx264',  # Стандартный кодек для Telegram
+                '-preset', 'veryfast',  # Чтобы сервер не "закипел" при сжатии
+            ],
+        }
 
     def timestamp_filename(self, prefix: str, ext: str = "mp4") -> str:
         ts = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -24,7 +38,7 @@ class Downloader:
     # ====================== DOWNLOAD FUNCTIONS ======================
     def download_tiktok(self, url: str) -> str:
         output = self.timestamp_filename("tiktok")
-        ydl_opts = {"outtmpl": output}
+        ydl_opts = self.ydl_opts.update({"outtmpl": output})
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         logger.info(f"Saved TikTok → {output}")
@@ -32,7 +46,7 @@ class Downloader:
 
     def download_facebook(self, url: str) -> str:
         output = self.timestamp_filename("facebook")
-        ydl_opts = {"outtmpl": output}
+        ydl_opts = self.ydl_opts.update({"outtmpl": output})
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         logger.info(f"Saved Facebook → {output}")
@@ -40,11 +54,7 @@ class Downloader:
 
     def download_youtube(self, url: str) -> str:
         output = self.timestamp_filename("youtube")
-        ydl_opts = {
-            "outtmpl": output,
-            "format": "bestvideo+bestaudio/best",
-            "merge_output_format": "mp4",
-        }
+        ydl_opts = self.ydl_opts.update({"outtmpl": output})
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         logger.info(f"Saved YouTube → {output}")
@@ -52,7 +62,7 @@ class Downloader:
 
     def download_instagram(self, url: str) -> str:
         output = self.timestamp_filename("instagram")
-        ydl_opts = {"outtmpl": output}
+        ydl_opts = self.ydl_opts.update({"outtmpl": output})
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         logger.info(f"Saved Instagram → {output}")
