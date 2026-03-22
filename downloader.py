@@ -70,13 +70,13 @@ class Downloader:
         logger.info(f"Start downloading: {site} | {link}")
 
         try:
-            if site == "tiktok":
+            if site == "tiktok" or site in "tiktok":
                 path = await asyncio.to_thread(self.download_tiktok, link)
-            elif site == "youtube":
+            elif site == "youtube" or site in "youtube":
                 path = await asyncio.to_thread(self.download_youtube, link)
-            elif site == "facebook":
+            elif site == "facebook" or site in "facebook":
                 path = await asyncio.to_thread(self.download_facebook, link)
-            elif site == "instagram":
+            elif site == "instagram" or site in "instagram":
                 path = await asyncio.to_thread(self.download_instagram, link)
             else:
                 logger.warning(f"Unknown site: {site}")
