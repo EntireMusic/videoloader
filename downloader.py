@@ -19,6 +19,9 @@ class Downloader:
             'merge_output_format': 'mp4',
             'noplaylist': True,
 
+            # JS
+            'js_runtimes': ['node', 'deno'],
+
             # Заставляем перекодировать в mp4, если скачался другой формат
             'postprocessors': [{
                 'key': 'FFmpegVideoConvertor',
