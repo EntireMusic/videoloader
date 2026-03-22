@@ -42,7 +42,10 @@ class Downloader:
     # ====================== DOWNLOAD FUNCTIONS ======================
     def download_tiktok(self, url: str) -> str:
         output = self.timestamp_filename("tiktok")
-        ydl_opts = self.ydl_opts.update({"outtmpl": output})
+
+        ydl_opts = dict(self.ydl_opts)
+        ydl_opts["outtmpl"] = output
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         logger.info(f"Saved TikTok → {output}")
@@ -58,7 +61,10 @@ class Downloader:
 
     def download_youtube(self, url: str) -> str:
         output = self.timestamp_filename("youtube")
-        ydl_opts = self.ydl_opts.update({"outtmpl": output})
+
+        ydl_opts = dict(self.ydl_opts)
+        ydl_opts["outtmpl"] = output
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         logger.info(f"Saved YouTube → {output}")
@@ -66,7 +72,10 @@ class Downloader:
 
     def download_instagram(self, url: str) -> str:
         output = self.timestamp_filename("instagram")
-        ydl_opts = self.ydl_opts.update({"outtmpl": output})
+
+        ydl_opts = dict(self.ydl_opts)
+        ydl_opts["outtmpl"] = output
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         logger.info(f"Saved Instagram → {output}")
