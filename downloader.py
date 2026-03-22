@@ -20,11 +20,7 @@ class Downloader:
             'noplaylist': True,
 
             # JS
-            'js_runtimes': {
-                'node': {
-                    'path': '/usr/bin/node'
-                }
-            },
+            'js_runtimes': ['node:/usr/bin/node'],
 
             # Заставляем перекодировать в mp4, если скачался другой формат
             'postprocessors': [{
