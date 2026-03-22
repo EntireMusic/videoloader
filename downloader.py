@@ -12,19 +12,23 @@ logger = logging.getLogger(__name__)
 class Downloader:
     def __init__(self) -> None:
         self.ydl_opts = {
-            # 1. Приоритет форматов: ищем видео до 1080p, которое весит меньше 45МБ.
-            # Если нет — ищем 720p. Если нет — берем любое лучшее.
-            'format': 'bestvideo[height<=1080][filesize<45M]+bestaudio/best[height<=720][filesize<45M]/best',
+            # Ограничиваем форматы сразу, чтобы не качать лишнего
+            'format': 'bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
 
+            # Шаблон имени файла (без этого он может сохранить как .webm)
             'merge_output_format': 'mp4',
             'noplaylist': True,
 
-            # 2. Пост-процессор: если файл всё равно больше 50МБ,
-            # заставляем ffmpeg принудительно его пережать.
+            # Заставляем перекодировать в mp4, если скачался другой формат
+            'postprocessors': [{
+                'key': 'FFmpegVideoConvertor',
+                'preferedformat': 'mp4',
+            }],
+
             'postprocessor_args': [
-                '-fs', '49M',  # Ограничение размера выходного файла (File Size)
-                '-vcodec', 'libx264',  # Стандартный кодек для Telegram
-                '-preset', 'veryfast',  # Чтобы сервер не "закипел" при сжатии
+                '-fs', '49M',
+                '-vcodec', 'libx264',
+                '-preset', 'veryfast',
             ],
         }
 
