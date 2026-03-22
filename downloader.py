@@ -21,8 +21,9 @@ class Downloader:
 
             # JS
             'js_runtimes': {
-                'node': {},  # Node.js у PATH (найпростіший варіант)
-                'deno': {},  # можна залишити deno за замовчуванням
+                'node': {
+                    'path': '/usr/bin/node'
+                }
             },
 
             # Заставляем перекодировать в mp4, если скачался другой формат
