@@ -20,7 +20,10 @@ class Downloader:
             'noplaylist': True,
 
             # JS
-            'js_runtimes': 'node',
+            'js_runtimes': {
+                'node': {},  # Node.js у PATH (найпростіший варіант)
+                'deno': {},  # можна залишити deno за замовчуванням
+            },
 
             # Заставляем перекодировать в mp4, если скачался другой формат
             'postprocessors': [{
