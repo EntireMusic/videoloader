@@ -20,7 +20,7 @@ class Downloader:
             'noplaylist': True,
 
             # JS
-            'js_runtimes': ['node', 'deno'],
+            'js_runtimes': 'node',
 
             # Заставляем перекодировать в mp4, если скачался другой формат
             'postprocessors': [{
