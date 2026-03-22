@@ -25,13 +25,11 @@ class Downloader:
                 'preferedformat': 'mp4',
             }],
 
-            'postprocessor_args': {
-                'FFmpegVideoConvertor': [
-                    '-fs', '49M',
-                    '-vcodec', 'libx264',
-                    '-preset', 'veryfast',
-                ]
-            },
+            'postprocessor_args': [
+                '-fs', '49M',
+                '-vcodec', 'libx264',
+                '-preset', 'veryfast',
+            ],
         }
 
     def timestamp_filename(self, prefix: str, ext: str = "mp4") -> str:
